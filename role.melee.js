@@ -2,6 +2,7 @@
 TODO:
 -Attack closest enemy.
 */
+// Role icon: 🔪
 
 var roleMelee = 
 {

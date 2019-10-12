@@ -13,14 +13,14 @@ var roleHarvester = {
 	    if(creep.carry.energy < creep.carryCapacity) 
 	    {
                 var sources = creep.room.find(FIND_SOURCES);
-               // var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
-               if(sources[creep.memory.sourceMining].energy == 0){
-                creep.say("⏳");
+                if(sources[creep.memory.sourceMining].energy == 0){
+                creep.say("⛏ - ⏳");
                }
                 if(creep.harvest(sources[creep.memory.sourceMining]) == ERR_NOT_IN_RANGE) {
                     creep.say("⛏");
                     creep.moveTo(sources[creep.memory.sourceMining], {visualizePathStyle: {stroke: '#fcff33'}});
                 }
+                //var source = creep.pos.findClosestByPath(FIND_SOURCES, {filter: (s) => s.pos.findInRange(FIND_MY_CREEPS, 1, {filter: (c) => c.memory.role == 'harvester' && c.name != creep.name})[0] == undefined});
         }
 
         else if (creep.carry = creep.carryCapacity){

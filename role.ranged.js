@@ -2,6 +2,7 @@
 TODO:
 -Attack closest enemy.
 */
+// Role icon: 🏹
 
 var roleRanged = 
 {
@@ -9,7 +10,7 @@ var roleRanged =
     {
         var targetRoom;
         var targetSpawn = creep.room.find(FIND_HOSTILE_SPAWNS);
-        creep.say('🔪');
+        creep.say('🏹');
         var enemy= creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
         var enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
                 structure.structureType != STRUCTURE_CONTROLLER &&

@@ -52,7 +52,7 @@ var roleDeliverier =
                 }
 	            else
 	            {
-	                creep.say("😴");
+	                creep.say("🚛 - 😴");
 	                creep.moveTo(17,32, {visualizePathStyle: {stroke: '#ffaa00'}});
 	            }
             }
