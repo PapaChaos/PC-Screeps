@@ -9,10 +9,32 @@ var roleExpansionDeliverier = {
             if(creep.room == Game.flags.expansion1.room)
             {
                 creep.say("🚚");
+                
+                var dropenergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+                
                 var containers = Game.flags.expansion1.room.find(FIND_STRUCTURES, {
                     filter: (s) => s.structureType == STRUCTURE_CONTAINER
                                 && s.store[RESOURCE_ENERGY] > 0});
-                if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                                
+                    var tombstones = creep.room.find(FIND_TOMBSTONES, { filter: (Tombstone) => { return (	
+									Tombstone.store[RESOURCE_ENERGY] > 0
+                    )}});
+                if(dropenergy)
+                {
+                    if(creep.pickup(dropenergy) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(dropenergy.pos)
+                    }
+                }
+	            if (tombstones.length > 0)
+                {
+                    if(creep.withdraw(tombstones[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                    {
+                        creep.say('Tombstone');
+                        creep.moveTo(tombstones[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+	            }
+                else if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
                 {
                     creep.moveTo(containers[0]);
                 }

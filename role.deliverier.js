@@ -15,22 +15,29 @@ var roleDeliverier =
 	        }
 	        else if (!creep.memory.readyForDelivery)
 	        {
-	            //var tombstones = creep.room.find(FIND_TOMBSTONES);
-	            //var tombstones = _.filter(FIND_TOMBSTONES, (Tombstone) => Tombstone.store[RESOURCE_ENERGY] > 0)
+	            //var tombstones = _.filter(FIND_TOMBSTONES, (Tombstone) => Tombstone.store > 0)
 	            var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy == creep.carryCapacity);
 	           	var harvesters2 = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy > 0);
-	            /*if (tombstones.length != 0){
+	           	var dropedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
 
-	                	if(creep.transfer(energytombstones[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
-                        {
-                            creep.say('Tombstone');
-                            creep.moveTo(energytombstones[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                        }
-	            }*/
+                var tombstones = creep.room.find(FIND_TOMBSTONES, { filter: (Tombstone) => { return (	
+									Tombstone.store[RESOURCE_ENERGY] > 0
+                    )}});
+
+                         creep.say(tombstones.length); 
 
 	            //creep.moveTo(7,21, {visualizePathStyle: {stroke: '#ffaa00'}});
-	            
-	           if(harvesters.length > 0)
+
+	            if (tombstones.length > 0)
+                {
+                    if(creep.withdraw(tombstones[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                    {
+                        creep.say('Tombstone');
+                        creep.moveTo(tombstones[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+	            }
+
+	            else if(harvesters.length > 0)
 	            {
 	                _.sortBy(creep, c => creep.pos.getRangeTo(c))
 	                if(harvesters[0].transfer(creep, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
@@ -39,6 +46,16 @@ var roleDeliverier =
                         creep.say('🚛');
                     }
 	            }
+
+	            else if(dropedEnergy)
+                {
+                    if(creep.pickup(dropedEnergy) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(dropedEnergy.pos)
+                    }
+                }
+              
+
                 else if (harvesters2.length > 0)
                 {
                     	                _.sortBy(creep, c => c.carry)
