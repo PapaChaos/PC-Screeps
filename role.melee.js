@@ -1,6 +1,6 @@
 /*
 TODO:
--Attack closest enemy.
+-combine combat roles into one and adjust behaviour depending on body parts.
 */
 // Role icon: 🔪
 
@@ -33,7 +33,7 @@ var roleMelee =
         {
             creep.moveTo(enemy);
             creep.attack(enemy);
-            console.log("ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ");
+            creep.say("🔪 - 💢");
         }
         
 

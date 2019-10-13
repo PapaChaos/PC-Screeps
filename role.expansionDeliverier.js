@@ -21,6 +21,7 @@ var roleExpansionDeliverier = {
                     )}});
                 if(dropenergy)
                 {
+                    creep.say('🚚 - 🎇');
                     if(creep.pickup(dropenergy) == ERR_NOT_IN_RANGE)
                     {
                         creep.moveTo(dropenergy.pos)

@@ -5,7 +5,6 @@ TODO:
 
 var roleHarvester = {
 
-    /** @param {Creep} creep **/
     run: function(creep) {
         var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester' && creep.memory.sourceMining == 0));
         creep.memory.sourceMining = 1;
@@ -13,14 +12,15 @@ var roleHarvester = {
 	    if(creep.carry.energy < creep.carryCapacity) 
 	    {
                 var sources = creep.room.find(FIND_SOURCES);
-                if(sources[creep.memory.sourceMining].energy == 0){
-                creep.say("⛏ - ⏳");
-               }
-                if(creep.harvest(sources[creep.memory.sourceMining]) == ERR_NOT_IN_RANGE) {
-                    creep.say("⛏");
+                if(sources[creep.memory.sourceMining].energy == 0)
+                {
+                    creep.say("⛏ - ⏳");
+                }
+                else if(creep.harvest(sources[creep.memory.sourceMining]) == ERR_NOT_IN_RANGE) 
+                {
                     creep.moveTo(sources[creep.memory.sourceMining], {visualizePathStyle: {stroke: '#fcff33'}});
                 }
-                //var source = creep.pos.findClosestByPath(FIND_SOURCES, {filter: (s) => s.pos.findInRange(FIND_MY_CREEPS, 1, {filter: (c) => c.memory.role == 'harvester' && c.name != creep.name})[0] == undefined});
+                creep.say('⛏ - 🌟');
         }
 
         else if (creep.carry = creep.carryCapacity){
@@ -63,23 +63,12 @@ var roleHarvester = {
                     creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
-
-            else if(deliveriers.length > 0)
+        }
+                else if(deliverieres.length > 0)
             {
-                creep.say('transfer deliverier: '+deliveriers.length.toString());
-                if(creep.transfer(deliveriers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(deliveriers[0], {visualizePathStyle: {stroke: '#ffffff'}});
-                }
+                creep.say("⛏ - ⏳");
             }
         }
-        }
-        
-        //Get creeps out of the way from sources
-       /* else
-            {
-                creep.moveTo(10,28, {visualizePathStyle: {stroke: '#ffffff'}});
-            }*/
-        
 	}
 };
 

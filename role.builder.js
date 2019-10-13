@@ -2,7 +2,7 @@
 TODO:
 
 */
-
+//Role Icon: 🔧 🛠
 var roleBuilder = {
 
     /** @param {Creep} creep **/
@@ -14,7 +14,7 @@ var roleBuilder = {
 	    }
 	    else if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.building = true;
-	        creep.say('🚧 build');
+	        creep.say('🔨 - 🚧');
 	    }
 
 	    if(creep.memory.building) 
@@ -30,7 +30,7 @@ var roleBuilder = {
             {
                 
                 creep.moveTo(31,21, {visualizePathStyle: {stroke: '#ffaa00'}});
-                creep.say('😴');
+                creep.say('🔨 - 😴');
             }
 	    }
 	    else 
@@ -68,7 +68,7 @@ var roleBuilder = {
             else
             {
                 creep.moveTo(22,25, {visualizePathStyle: {stroke: '#ffaa00'}});
-                creep.say('Waiting');
+                creep.say('🔨 - 😴');
             }
         }
 	}

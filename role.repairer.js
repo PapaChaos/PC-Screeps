@@ -2,7 +2,7 @@
 TODO:
 
 */
-
+// role icon: 🔧
 var roleRepairer = 
 {
     run: function(creep)
@@ -10,6 +10,7 @@ var roleRepairer =
 
         if(creep.carry.energy == 0)
         {
+            creep.say('🔧');
             creep.memory.repairTarget = null; 
         }
         
@@ -30,7 +31,7 @@ var roleRepairer =
             {
                 if(creep.withdraw(containers[0],RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
                 creep.moveTo(containers[0],{visualizePathStyle: {stroke: '#ffffff'}})
-                creep.say('Container');
+                creep.say('🔧 Container');
                 }
             }
             else
@@ -41,6 +42,7 @@ var roleRepairer =
                 {
                     creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
                 }
+                creep.say('🔧 - ⛏ ');
             }
         }
         else if(creep.carry.energy > 0 && !creep.memory.repairTarget)
@@ -62,12 +64,12 @@ var roleRepairer =
             if(creep.repair(Game.getObjectById(creep.memory.repairTarget.id)) == ERR_INVALID_TARGET ||
                creep.repair(Game.getObjectById(creep.memory.repairTarget.id)) == ERR_NOT_ENOUGH_RESOURCES)
             {
-                creep.say('Invalid');
+                creep.say('🔧 - Invalid');
                 creep.memory.repairTarget = null;
             }
             else if((Game.getObjectById(creep.memory.repairTarget.id)).hits == (Game.getObjectById(creep.memory.repairTarget.id)).hitsMax){
                 creep.memory.repairTarget = null;
-                creep.say('Done');
+                creep.say('🔧 - Done');
             }
             
             else if(creep.repair(Game.getObjectById(creep.memory.repairTarget.id)) == ERR_NOT_IN_RANGE )
@@ -79,7 +81,7 @@ var roleRepairer =
         else
         {
             creep.moveTo(30,20, {visualizePathStyle: {stroke: '#ffaa00'}});
-            creep.say('😴');
+            creep.say('🔧 - 😴');
         }
 	}
 };

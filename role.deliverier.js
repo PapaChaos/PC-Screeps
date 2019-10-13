@@ -1,7 +1,6 @@
 /*
 TODO:
--Energy on ground pick up.
--Tombstone energy pick up.
+
 */
 
 var roleDeliverier = 
@@ -15,7 +14,6 @@ var roleDeliverier =
 	        }
 	        else if (!creep.memory.readyForDelivery)
 	        {
-	            //var tombstones = _.filter(FIND_TOMBSTONES, (Tombstone) => Tombstone.store > 0)
 	            var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy == creep.carryCapacity);
 	           	var harvesters2 = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy > 0);
 	           	var dropedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
@@ -24,7 +22,6 @@ var roleDeliverier =
 									Tombstone.store[RESOURCE_ENERGY] > 0
                     )}});
 
-                         creep.say(tombstones.length); 
 
 	            //creep.moveTo(7,21, {visualizePathStyle: {stroke: '#ffaa00'}});
 
@@ -49,6 +46,8 @@ var roleDeliverier =
 
 	            else if(dropedEnergy)
                 {
+                    creep.say('🚛 - 🎇');
+                    //🎇
                     if(creep.pickup(dropedEnergy) == ERR_NOT_IN_RANGE)
                     {
                         creep.moveTo(dropedEnergy.pos)

@@ -1,6 +1,6 @@
 /*
 TODO:
-make building queue tiers.
+
 */
 var buildQueue = 
 {
@@ -37,9 +37,9 @@ var buildQueue =
         /////////////////  CREEP BODY  /////////////////
         ////////////////////////////////////////////////
         var bodyHarvester = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE]; 
-        var bodyUpgraders = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
-        var bodyBuilders = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
-        var bodyRepairers = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        var bodyUpgraders = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        var bodyBuilders = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        var bodyRepairers = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         var bodyDeliveriers = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
         
         var bodyScouts = [TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];

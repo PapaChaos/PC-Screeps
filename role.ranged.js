@@ -1,6 +1,6 @@
 /*
 TODO:
--Attack closest enemy.
+-combine combat roles into one and adjust behaviour depending on body parts.
 */
 // Role icon: 🏹
 
@@ -39,6 +39,7 @@ var roleRanged =
 
         else if(targetSpawn.length)
         {
+            creep.say('🏹 - 💢');
             if(creep.attack(targetSpawn [0]) == ERR_NOT_IN_RANGE)
             {
                 creep.moveTo(targetSpawn[0]);
