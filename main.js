@@ -17,7 +17,7 @@ var roleScout = require('role.scout');
 var roleExpansionHarvester = require('role.expansionHarvester');
 var roleExpansionDeliverier = require('role.expansionDeliverier');
 var RoomMemories = require('roomMemories');
-
+var roleClaimer = require('role.claimer');
 
 module.exports.loop = function () {
 	for(var name in Memory.creeps) {
@@ -79,7 +79,12 @@ module.exports.loop = function () {
             case 'expansionDeliverier':
                 roleExpansionDeliverier.run(creep);
                 break;
+            
+            case 'claimer':
+                roleClaimer.run('creep');
+                break;
         }
+        
     }
 
     

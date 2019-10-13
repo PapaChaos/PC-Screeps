@@ -1,3 +1,8 @@
+/*
+TODO:
+-Merge into deliverier.
+*/
+
 var roleExpansionDeliverier = {
     run: function(creep) 
     {

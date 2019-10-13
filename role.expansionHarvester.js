@@ -1,6 +1,6 @@
 /*
 TODO:
-
+-Merge into harvester.
 */
 
 var roleExpansionHarvester = 

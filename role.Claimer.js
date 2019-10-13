@@ -1,9 +1,12 @@
-var roleClaimer = {
+var roleClaimer = 
 {
     run: function(creep)
     {
-        var targetRoom;
-        creep.say('🔪');
+        var targetRoom = Game.flags.expansion1.room;
+        var reserve = true;
+        var claim = false;
+        
+        creep.say('🚩');
         var enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
                 structure.structureType == STRUCTURE_CONTROLLER)}});
         
@@ -23,12 +26,21 @@ var roleClaimer = {
         
         else if(enemyStructure)
         {
-            if(creep.attack(enemyStructure) == ERR_NOT_IN_RANGE)
+            if(reserve)
             {
-                creep.moveTo(enemyStructure);
+                if(creep.reserveController(enemyStructure) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(enemyStructure);
+                }
+            }
+            if(claim)
+            {
+                if(creep.claimController(enemyStructure) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(enemyStructure);
+                }
             }
         }
-
     }
 };
 

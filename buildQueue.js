@@ -33,6 +33,7 @@ var buildQueue =
         var amountMelees = 5;
         var amountRangers = 3;
         
+        var amountClaimers = 1;
         ////////////////////////////////////////////////
         /////////////////  CREEP BODY  /////////////////
         ////////////////////////////////////////////////
@@ -49,6 +50,7 @@ var buildQueue =
         
         var bodyMelees = [TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
         var bodyRangers = [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, TOUGH,TOUGH, MOVE,MOVE,MOVE];
+        var bodyClaimers = [CLAIM,CLAIM,MOVE];
         
         
         /*
@@ -245,8 +247,22 @@ var buildQueue =
                 Game.spawns['Spawn1'].spawnCreep(bodyRangers, newName, 
                 {memory: {role: 'ranged'}});
             }
-            else{
+            else
+            {
                 buildQueueTier = 5;
+            }
+        }
+        if(buildQueueTier == 5)
+        {
+            var claimers = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
+            console.log('Claimers: ' + claimers.length);
+            
+            if(claimers.length < amountClaimers)
+            {
+                var newName = 'Claimer' + Game.time;
+                console.log('Spawning new Claimer: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodyClaimers, newName, 
+                {memory: {role: 'claimer'}});
             }
         }
         console.log('Build Queue: ' + buildQueueTier);
