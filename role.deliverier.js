@@ -18,9 +18,14 @@ var roleDeliverier =
 	           	var harvesters2 = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy > 0);
 	           	var dropedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
 
-                var tombstones = creep.room.find(FIND_TOMBSTONES, { filter: (Tombstone) => { return (	
+                var tombstones = creep.room.find(FIND_TOMBSTONES, 
+                { filter: (Tombstone) => { return (	
 									Tombstone.store[RESOURCE_ENERGY] > 0
                     )}});
+                    /*
+                let stored_resources = _.filter(Object.keys(tombstones.store), resource => 
+                tombstones.store[resource] > 0)    
+                creep.withdraw(creep.room.storage.store, stored_resources[0])*/
 
 
 	            //creep.moveTo(7,21, {visualizePathStyle: {stroke: '#ffaa00'}});

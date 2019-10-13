@@ -33,8 +33,11 @@ var roleRanged =
         }
         if(enemy)
         {
-            creep.moveTo(enemy);
-            creep.attack(enemy);
+            if(creep.attack(enemy) == ERR_NOT_IN_RANGE) 
+            {
+                creep.moveTo(enemy);
+            }
+            creep.say('🏹 - 💢');
             console.log("ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ALERT!!!! WE ARE UNDER ATTACK!!!!! ");
         }
         

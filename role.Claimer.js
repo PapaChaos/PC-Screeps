@@ -2,42 +2,52 @@ var roleClaimer =
 {
     run: function(creep)
     {
-        var targetRoom = Game.flags.expansion1.room;
+        var targetRoom = Game.flags.expansion1;
         var reserve = true;
         var claim = false;
         
-        creep.say('🚩');
-        var enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
-                structure.structureType == STRUCTURE_CONTROLLER)}});
-        
+
+
         if(targetRoom)
         {
-            creep.moveTo(targetRoom);
+            //creep.moveTo(targetRoom);
+            creep.moveTo(targetRoom, {visualizePathStyle: {stroke: '#ffffff'}});
+            
         }
-
         else if(!targetRoom && (creep.room != Game.spawns['Spawn1'].room))
         {
-            creep.moveTo(Game.spawns['Spawn1']);
+            creep.moveTo(Game.spawns['Spawn1'], {visualizePathStyle: {stroke: '#ffffff'}});
+            creep.say('🚩');
         }
         else if (!targetRoom && (creep.room == Game.spawns['Spawn1'].room))
         {
             creep.moveTo(38,22);
+            creep.say('🚩');
         }
-        
-        else if(enemyStructure)
+
+        if(creep.room == targetRoom.room)
         {
-            if(reserve)
+            creep.moveTo(targetRoom);
+            
+            var enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
+            structure.structureType == STRUCTURE_CONTROLLER)}});
+            if(enemyStructure)
             {
-                if(creep.reserveController(enemyStructure) == ERR_NOT_IN_RANGE)
+                if(reserve)
                 {
-                    creep.moveTo(enemyStructure);
+                    if(creep.reserveController(enemyStructure) == ERR_NOT_IN_RANGE)
+                    {
+                       creep.moveTo(enemyStructure);
+                       creep.say('🚩');
+                    }
                 }
-            }
-            if(claim)
-            {
-                if(creep.claimController(enemyStructure) == ERR_NOT_IN_RANGE)
+                if(claim)
                 {
-                    creep.moveTo(enemyStructure);
+                    if(creep.claimController(enemyStructure) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(enemyStructure);
+                        creep.say('🚩');
+                    }
                 }
             }
         }

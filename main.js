@@ -84,7 +84,7 @@ module.exports.loop = function () {
                 break;
             
             case 'claimer':
-                roleClaimer.run('creep');
+                roleClaimer.run(creep);
                 break;
         }
         
