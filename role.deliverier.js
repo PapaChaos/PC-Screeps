@@ -103,6 +103,12 @@ var roleDeliverier =
 									structure.energy < structure.energyCapacity;
                     }
                      });
+                    var towersEmergency = creep.room.find(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (	structure.structureType == STRUCTURE_TOWER ) &&
+									structure.energy < (structure.energyCapacity*0.5);
+                    }
+                     });
                                         var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
                     if(targets.length > 0) 
                     {
@@ -111,6 +117,14 @@ var roleDeliverier =
                             creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                         }
                     }
+                    else if (towersEmergency > 0)
+                    {
+                        if(creep.transfer(towersEmergency[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                        {
+                            creep.moveTo(towersEmergency[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                        }
+                    }
+
                     else if(containers.length > 0) 
                     {
                         if(creep.transfer(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 

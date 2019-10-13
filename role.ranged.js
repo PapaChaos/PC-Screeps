@@ -1,6 +1,8 @@
 /*
 TODO:
+-Make ranged stay at max attack range and try to move away from attacker if it is within melee range.
 -combine combat roles into one and adjust behaviour depending on body parts.
+
 */
 // Role icon: 🏹
 

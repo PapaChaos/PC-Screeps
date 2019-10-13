@@ -30,8 +30,8 @@ var buildQueue =
         var amountExpansionDeliveriers = 4;
         
         //combat creeps
-        var amountMelees = 5;
-        var amountRangers = 3;
+        var amountMelees = 4;
+        var amountRangers = 2;
         
         var amountClaimers = 1;
         ////////////////////////////////////////////////
