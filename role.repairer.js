@@ -13,7 +13,7 @@ var roleRepairer =
             creep.say('🔧');
             creep.memory.repairTarget = null; 
         }
-        
+
         if(creep.carry.energy < creep.carryCapacity && !creep.memory.repairTarget)
         {
             var containers = creep.room.find(FIND_STRUCTURES,
@@ -27,7 +27,11 @@ var roleRepairer =
                 }
                              
             })
-            if(containers.length > 0)
+            if(creep.room != Game.spawns['Spawn1'].room)
+            {
+                creep.moveTo(Game.spawns['Spawn1']);
+            }
+            else if(containers.length > 0)
             {
                 if(creep.withdraw(containers[0],RESOURCE_ENERGY) == ERR_NOT_IN_RANGE){
                 creep.moveTo(containers[0],{visualizePathStyle: {stroke: '#ffffff'}})
@@ -45,15 +49,23 @@ var roleRepairer =
                 creep.say('🔧 - ⛏ ');
             }
         }
+        else if(creep.pos.x == 49)
+        {
+            creep.moveTo(48, creep.pos.y);
+        }
         else if(creep.carry.energy > 0 && !creep.memory.repairTarget)
         {
             const targets = creep.room.find(FIND_STRUCTURES, {
                 filter: object => object.hits < object.hitsMax
             });
 
-            targets.sort((a,b) => a.hits - b.hits);
-
-            if(targets.length > 0) 
+            targets.sort((a,b) => (a.hits/a.hitsMax) - (b.hits/b.hitsMax));
+            
+            if(creep.room != Game.spawns['Spawn1'].room)
+            {
+                creep.moveTo(Game.spawns['Spawn1']);
+            }
+            else if(targets.length > 0) 
             {
                 creep.memory.repairTarget = targets[0];
                 creep.say('Finding');
@@ -80,8 +92,15 @@ var roleRepairer =
         }
         else
         {
-            creep.moveTo(30,20, {visualizePathStyle: {stroke: '#ffaa00'}});
-            creep.say('🔧 - 😴');
+            if(creep.room != Game.spawns['Spawn1'].room)
+            {
+                creep.moveTo(Game.spawns['Spawn1']);
+            }
+            else
+            {
+                creep.moveTo(30,20, {visualizePathStyle: {stroke: '#ffaa00'}});
+                creep.say('🔧 - 😴');
+            }
         }
 	}
 };

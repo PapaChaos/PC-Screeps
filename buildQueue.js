@@ -1,10 +1,9 @@
 /*
 TODO:
-
+-Create medics creeps.
 */
 var buildQueue = 
 {
-
     startProduction: function() 
     {
         var buildQueueTier = 0;
@@ -19,10 +18,10 @@ var buildQueue =
         ////////////////////////////////////////////////
         //main hq creeps
         var amountHarvester = 2; 
-        var amountUpgraders = 3;
-        var amountDeliveriers = 3;
-        var amountBuilders = 1;
-        var amountRepairers = 3;
+        var amountUpgraders = 2;
+        var amountDeliveriers = 2;
+        var amountBuilders = 2;
+        var amountRepairers = 4;
         
         //expansion creeps
         var amountScouts = 1;//*expansionFlags.length;
@@ -30,14 +29,16 @@ var buildQueue =
         var amountExpansionDeliveriers = 4;
         
         //combat creeps
-        var amountMelees = 4;
-        var amountRangers = 2;
-        
+        var amountSoldierMelees = 3;
+        var amountSoldierRangers = 2;
+        var amountSoldierMedics = 0;
+
         var amountClaimers = 1;
         ////////////////////////////////////////////////
         /////////////////  CREEP BODY  /////////////////
         ////////////////////////////////////////////////
         var bodyHarvester = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE]; 
+        
         var bodyUpgraders = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         var bodyBuilders = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         var bodyRepairers = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
@@ -47,9 +48,9 @@ var buildQueue =
         var bodyExpansionHarvesters = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
         var bodyExpansionDeliveriers = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         
+        var bodySoldierMelees = [TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
+        var bodySoldierRangers = [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, TOUGH,TOUGH, MOVE,MOVE,MOVE];
         
-        var bodyMelees = [TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
-        var bodyRangers = [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, TOUGH,TOUGH, MOVE,MOVE,MOVE];
         var bodyClaimers = [CLAIM,CLAIM,MOVE];
         
         
@@ -224,28 +225,30 @@ var buildQueue =
         if(buildQueueTier == 4)
         {
             
-            var melees = _.filter(Game.creeps, (creep) => creep.memory.role == 'melee');
-            console.log('Melees: ' + melees.length);
-         
-            var rangers = _.filter(Game.creeps, (creep) => creep.memory.role == 'ranged');
-            console.log('Rangers: ' + rangers.length);
+            var soldierMelees = _.filter(Game.creeps, (creep) => 
+                creep.memory.role == 'soldier' && 
+                creep.memory.soldierType == 'melee');
+                
+            console.log('Melees: ' + soldierMelees.length);
             
-            if(melees.length < amountMelees)
+            var soldierRangers = _.filter(Game.creeps, (creep) => 
+                creep.memory.role == 'soldier' && 
+                creep.memory.soldierType == 'ranger');
+                
+            
+            if(soldierMelees.length < amountSoldierMelees)
             {
-                var newName = 'Melee' + Game.time;
+                var newName = 'SoldierMelee' + Game.time;
                 console.log('Spawning new Melee: ' + newName);
-                Game.spawns['Spawn1'].spawnCreep(bodyMelees, newName, 
-                {memory: {role: 'melee'}});
+                Game.spawns['Spawn1'].spawnCreep(bodySoldierMelees, newName, 
+                {memory: {role: 'soldier'}});
             }
-        
-
-            
-            else if(rangers.length < amountRangers) 
+            else if(soldierRangers.length < amountSoldierRangers)
             {
-                var newName = 'Ranger' + Game.time;
+                var newName = 'SoldierRanger' + Game.time;
                 console.log('Spawning new Ranger: ' + newName);
-                Game.spawns['Spawn1'].spawnCreep(bodyRangers, newName, 
-                {memory: {role: 'ranged'}});
+                Game.spawns['Spawn1'].spawnCreep(bodySoldierRangers, newName, 
+                {memory: {role: 'soldier'}});
             }
             else
             {
@@ -263,6 +266,10 @@ var buildQueue =
                 console.log('Spawning new Claimer: ' + newName);
                 Game.spawns['Spawn1'].spawnCreep(bodyClaimers, newName, 
                 {memory: {role: 'claimer'}});
+            }
+            else
+            {
+                buildQueueTier = 6;
             }
         }
         console.log('Build Queue: ' + buildQueueTier);

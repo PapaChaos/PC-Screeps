@@ -2,7 +2,7 @@
 TODO:
 
 */
-
+// Role icon: ⚡ 
 var roleUpgrader = {
 
     /** @param {Creep} creep **/

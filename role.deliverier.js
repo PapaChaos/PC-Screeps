@@ -2,7 +2,7 @@
 TODO:
 
 */
-
+// Role icon: 🚛
 var roleDeliverier = 
 {
     run: function(creep)

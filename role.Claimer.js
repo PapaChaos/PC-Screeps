@@ -1,3 +1,9 @@
+/*
+TODO:
+
+*/
+// Role Icon: 🚩
+
 var roleClaimer = 
 {
     run: function(creep)
@@ -8,9 +14,9 @@ var roleClaimer =
         
 
 
-        if(targetRoom)
+        if(targetRoom && creep.room != targetRoom.room)
         {
-            //creep.moveTo(targetRoom);
+            creep.say('🚩');
             creep.moveTo(targetRoom, {visualizePathStyle: {stroke: '#ffffff'}});
             
         }
@@ -27,10 +33,11 @@ var roleClaimer =
 
         if(creep.room == targetRoom.room)
         {
-            creep.moveTo(targetRoom);
+            //creep.moveTo(targetRoom);
             
-            var enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
+            var enemyStructure = creep.pos.findClosestByPath(FIND_STRUCTURES, {filter: (structure) =>{ return(
             structure.structureType == STRUCTURE_CONTROLLER)}});
+
             if(enemyStructure)
             {
                 if(reserve)
@@ -38,8 +45,14 @@ var roleClaimer =
                     if(creep.reserveController(enemyStructure) == ERR_NOT_IN_RANGE)
                     {
                        creep.moveTo(enemyStructure);
-                       creep.say('🚩');
+
                     }
+                    else
+                    {
+                        creep.reserveController(enemyStructure);
+                    }
+                    
+                    creep.say('🚩');
                 }
                 if(claim)
                 {

@@ -2,7 +2,7 @@
 TODO:
 -Merge into harvester.
 */
-
+// Role icon: ⛏ 
 var roleExpansionHarvester = 
 {
     run: function(creep) 

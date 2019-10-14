@@ -2,7 +2,7 @@
 TODO:
 -Merge into deliverier.
 */
-
+// Role icon: 🚚
 var roleExpansionDeliverier = {
     run: function(creep) 
     {

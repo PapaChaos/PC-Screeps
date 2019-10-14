@@ -2,11 +2,32 @@
 TODO:
 
 */
-
+// Role icon: ⛏ 
 var roleHarvester = {
 
     run: function(creep) {
         var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester' && creep.memory.sourceMining == 0));
+        
+       /* var source = creep.pos.findClosest(FIND_SOURCES, 
+        {
+            filter: function(source)
+            {
+                return source.memory.workers < 2; //Access this sources memory and if this source has less then 2 workers return this source
+            }
+        });
+        if(source)
+        { //If a source was found
+            creep.moveTo(source);
+            creep.harvest(source);
+            source.memory.workers += 1;
+            // You should also increment the sources workers amount somehow, 
+            // so the code above will know that another worker is working here. 
+            // Be aware of the fact that it should only be increased once!
+            // But I will leave that to the reader.
+            
+        }
+        */
+        
         creep.memory.sourceMining = 1;
         
 	    if(creep.carry.energy < creep.carryCapacity) 

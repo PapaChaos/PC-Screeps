@@ -2,22 +2,21 @@
 TODO:
 -Source open spot calculations.
 -Harvesters on each spot.
--Create Combat medics creeps.
 */
+//
 var buildqueue = require('buildQueue');
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
 var roleDeliverier = require('role.deliverier');
 var roleRepairer = require('role.repairer');
-var roleMelee = require('role.melee');
-var roleRanged = require('role.ranged');
-var Towers = require('tower');
+var roleSoldier = require('role.soldier');
 var roleScout = require('role.scout');
 var roleExpansionHarvester = require('role.expansionHarvester');
 var roleExpansionDeliverier = require('role.expansionDeliverier');
 var RoomMemories = require('roomMemories');
 var roleClaimer = require('role.claimer');
+var Towers = require('tower');
 
 module.exports.loop = function () {
 	for(var name in Memory.creeps) {
@@ -62,15 +61,11 @@ module.exports.loop = function () {
             case 'repairer':
                 roleRepairer.run(creep);
                 break;
-                
-            case 'melee':
-                roleMelee.run(creep);
+            
+            case 'soldier':
+                roleSoldier.run(creep);
                 break;
-                
-            case 'ranged':
-                roleRanged.run(creep);
-                break;
-                
+            
             case 'scout':
                 roleScout.run(creep);
                 break;
@@ -87,12 +82,11 @@ module.exports.loop = function () {
                 roleClaimer.run(creep);
                 break;
         }
-        
     }
-
     
-    var Moom = Game.spawns.Spawn1.room;
-    Towers.run(Moom.name);
+    var room = Game.spawns.Spawn1.room;
+    Towers.run(room.name);
+    
     RoomMemories.run();
 }
 

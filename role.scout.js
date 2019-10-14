@@ -2,7 +2,7 @@
 TODO:
 
  */
-
+// Role icon: 🛡
 var roleScout = 
 {
     run: function(creep)
