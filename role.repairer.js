@@ -55,9 +55,17 @@ var roleRepairer =
         }
         else if(creep.carry.energy > 0 && !creep.memory.repairTarget)
         {
-            const targets = creep.room.find(FIND_STRUCTURES, {
-                filter: object => object.hits < object.hitsMax
-            });
+            const targets = creep.room.find(FIND_STRUCTURES, 
+            {
+                filter: (structure) =>
+                { 
+                    return (
+                        structure.structureType != STRUCTURE_WALL &&
+                        structure.structureType != STRUCTURE_RAMPART) &&
+                        structure.hits < structure.hitsMax;
+                }
+            })
+
 
             targets.sort((a,b) => (a.hits/a.hitsMax) - (b.hits/b.hitsMax));
             
@@ -70,6 +78,24 @@ var roleRepairer =
                 creep.memory.repairTarget = targets[0];
                 creep.say('Finding');
             } 
+            else
+            {
+                const targets = creep.room.find(FIND_STRUCTURES, 
+                {
+                    filter: (structure) =>
+                    { 
+                        return (
+                            structure.structureType == STRUCTURE_WALL ||
+                            structure.structureType == STRUCTURE_RAMPART) &&
+                            structure.hits < structure.hitsMax;
+                    }
+                })
+                if(targets.length > 0) 
+                {
+                    creep.memory.repairTarget = targets[0];
+                    creep.say('Finding');
+                }
+            }
         }
         else if(creep.memory.repairTarget)
         {

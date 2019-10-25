@@ -13,8 +13,6 @@ var roleExpansionHarvester =
         
         if(creep.room == targetFlag.room)
         {
-            var targetContainer = Game.getObjectById('5da02d3fc73df5000105dd3f');
-            
             creep.memory.sourceMining = 0;
             
             var damagedContainers = creep.room.find(FIND_STRUCTURES,{filter: (structure) =>{ return (
@@ -24,7 +22,7 @@ var roleExpansionHarvester =
             damagedContainers.sort((a,b) => a.hits - b.hits);
                     
             var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
- creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
+
             if(targets.length && (creep.carry.energy > 0) && !creep.memory.harvesting)
             {
                 if(creep.build(targets[0]) == ERR_NOT_IN_RANGE) 
@@ -34,19 +32,19 @@ var roleExpansionHarvester =
                 }
             }
 
-            else if((targetContainer.hits < targetContainer.hitsMax) && creep.carry.energy > 0)
+            else if(damagedContainers && creep.carry.energy > 0 && !creep.memory.harvesting)
             {
-                if(creep.repair(targetContainer) == ERR_NOT_IN_RANGE )
+                if(creep.repair(damagedContainers[0]) == ERR_NOT_IN_RANGE )
                 {
-                    creep.moveTo(targetContainer, {visualizePathStyle: {stroke: '#ffffff'}});  
+                    creep.moveTo(damagedContainers[0], {visualizePathStyle: {stroke: '#ffffff'}});  
                     creep.say("sdf");
                 }
                 
-                else if(creep.repair(targetContainer) == -6 )
+                else if(creep.repair(damagedContainers[0]) == -6 )
                 {
-                    if(creep.transfer(targetContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                    if(creep.transfer(damagedContainers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
                     {
-                        creep.moveTo(targetContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+                        creep.moveTo(damagedContainers[0], {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 }
             }
@@ -73,10 +71,10 @@ var roleExpansionHarvester =
                 }
             }
 
-            else if (creep.carry = creep.carryCapacity)
+            else if (creep.carry.energy == creep.carryCapacity)
             {
                 creep.memory.harvesting = false;
-                 creep.say("dfki876");
+                
                 var containers = creep.room.find(FIND_STRUCTURES,{
                     filter: (structure) =>{
                         return (
@@ -84,10 +82,10 @@ var roleExpansionHarvester =
                             structure.structureType == STRUCTURE_STORAGE) && 
                             structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
                     }});
-
-                if(creep.transfer(targetContainer, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                var closestContainers = _.sortBy(containers, c => creep.pos.getRangeTo(c));
+                if(creep.transfer(closestContainers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
                 {
-                    creep.moveTo(targetContainer, {visualizePathStyle: {stroke: '#ffffff'}});
+                    creep.moveTo(closestContainers[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
 	        }
 	        else

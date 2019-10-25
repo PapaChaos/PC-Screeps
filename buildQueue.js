@@ -21,11 +21,11 @@ var buildQueue =
         var amountUpgraders = 2;
         var amountDeliveriers = 2;
         var amountBuilders = 2;
-        var amountRepairers = 4;
+        var amountRepairers = 2;
         
         //expansion creeps
         var amountScouts = 1;//*expansionFlags.length;
-        var amountExpansionHarvesters = 1;
+        var amountExpansionHarvesters = 2;
         var amountExpansionDeliveriers = 4;
         
         //combat creeps
@@ -37,19 +37,19 @@ var buildQueue =
         ////////////////////////////////////////////////
         /////////////////  CREEP BODY  /////////////////
         ////////////////////////////////////////////////
-        var bodyHarvester = [WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE]; 
+        var bodyHarvester = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE]; 
         
-        var bodyUpgraders = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var bodyBuilders = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var bodyRepairers = [WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var bodyDeliveriers = [CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE];
+        var bodyUpgraders = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        var bodyBuilders = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        var bodyRepairers = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        var bodyDeliveriers = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
         
-        var bodyScouts = [TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
-        var bodyExpansionHarvesters = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE,MOVE];
-        var bodyExpansionDeliveriers = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
+        var bodyScouts = [ATTACK,ATTACK,TOUGH,TOUGH,MOVE,MOVE];
+        var bodyExpansionHarvesters = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        var bodyExpansionDeliveriers = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
         
-        var bodySoldierMelees = [TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
-        var bodySoldierRangers = [RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, RANGED_ATTACK, TOUGH,TOUGH, MOVE,MOVE,MOVE];
+        var bodySoldierMelees = [TOUGH,TOUGH,ATTACK,TOUGH,TOUGH,ATTACK,MOVE,MOVE,MOVE];
+        var bodySoldierRangers = [RANGED_ATTACK, RANGED_ATTACK, TOUGH,TOUGH, MOVE,MOVE];
         
         var bodyClaimers = [CLAIM,CLAIM,MOVE];
         
@@ -178,9 +178,16 @@ var buildQueue =
             
             var expansionDeliveriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'expansionDeliverier');
             console.log('Expansion Deliveriers: ' + expansionDeliveriers.length);
-            if(x >=2)
+            if(Game.flags.expansion2)
             {
-                var targetflag = Game.flags.expansion2.id;
+                if(x >=2)
+                {
+                    var targetflag = Game.flags.expansion2.id;
+                }
+                else
+                {
+                    var targetflag = Game.flags.expansion1.id;
+                }
             }
             else
             {

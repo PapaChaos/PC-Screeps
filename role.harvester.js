@@ -47,9 +47,9 @@ var roleHarvester = {
         else if (creep.carry = creep.carryCapacity){
             creep.memory.harvesting = false; 
              var deliverieres = _.filter(Game.creeps, (creep) => creep.memory.role == 'deliverier');
-	         if(deliverieres.length < 1)
+	         if(deliverieres.length < 6)
 	         {
-	            
+	            var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
             var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (	structure.structureType == STRUCTURE_EXTENSION || 
@@ -84,7 +84,14 @@ var roleHarvester = {
                     creep.moveTo(containers[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
-        }
+            else if(constructions.length) 
+            {
+                if(creep.build(constructions[0]) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(constructions[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
+        }	        
+
                 else if(deliverieres.length > 0)
             {
                 creep.say("⛏ - ⏳");

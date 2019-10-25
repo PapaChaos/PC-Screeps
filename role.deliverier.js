@@ -16,19 +16,20 @@ var roleDeliverier =
 	        {
 	            var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy == creep.carryCapacity);
 	           	var harvesters2 = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy > 0);
-	           	var dropedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+	           	if(creep.room.FIND_DROPPED_ENERGY){
+	           	    	           	var dropedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
+	           	}
+
 
                 var tombstones = creep.room.find(FIND_TOMBSTONES, 
                 { filter: (Tombstone) => { return (	
 									Tombstone.store[RESOURCE_ENERGY] > 0
                     )}});
-                    /*
-                let stored_resources = _.filter(Object.keys(tombstones.store), resource => 
-                tombstones.store[resource] > 0)    
-                creep.withdraw(creep.room.storage.store, stored_resources[0])*/
-
-
-	            //creep.moveTo(7,21, {visualizePathStyle: {stroke: '#ffaa00'}});
+                    
+                var ruins = creep.room.find(FIND_RUINS, 
+                { filter: (ruin) => { return (	
+									ruin.store[RESOURCE_ENERGY] > 0
+                    )}});
 
 	            if (tombstones.length > 0)
                 {
@@ -38,6 +39,15 @@ var roleDeliverier =
                         creep.moveTo(tombstones[0], {visualizePathStyle: {stroke: '#ffffff'}});
                     }
 	            }
+	            else if (ruins.length > 0)
+                {
+                    if(creep.withdraw(ruins[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                    {
+                        creep.say('Ruin');
+                        creep.moveTo(ruins[0], {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+	            }
+
 
 	            else if(harvesters.length > 0)
 	            {
@@ -74,7 +84,7 @@ var roleDeliverier =
 	            else
 	            {
 	                creep.say("🚛 - 😴");
-	                creep.moveTo(17,32, {visualizePathStyle: {stroke: '#ffaa00'}});
+	                creep.moveTo(25,18, {visualizePathStyle: {stroke: '#ffaa00'}});
 	            }
             }
            
@@ -102,7 +112,7 @@ var roleDeliverier =
                                 structure.store[RESOURCE_ENERGY] < structure.storeCapacity;
                         }}
                     )
-                                        var towers = creep.room.find(FIND_STRUCTURES, {
+                    var towers = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (	structure.structureType == STRUCTURE_TOWER ) &&
 									structure.energy < structure.energyCapacity;
@@ -114,7 +124,9 @@ var roleDeliverier =
 									structure.energy < (structure.energyCapacity*0.5);
                     }
                      });
-                                        var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
+                    var builders = _.filter(Game.creeps, (creep) => 
+                                        creep.memory.role == 'builder' &&
+                                        creep.carry.energy < creep.carryCapacity);
                     if(targets.length > 0) 
                     {
                         if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
@@ -153,6 +165,12 @@ var roleDeliverier =
                         creep.moveTo(builders[0], {visualizePathStyle: {stroke: '#ffffff'}});
                     }
                 }
+                
+                else
+	            {
+	                creep.say("🚛 - 😴");
+	                creep.moveTo(25,18, {visualizePathStyle: {stroke: '#ffaa00'}});
+	            }
         }
 	}
 };

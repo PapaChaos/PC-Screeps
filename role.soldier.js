@@ -47,7 +47,7 @@ var roleSoldier =
         
         if(creep.memory.attacker === undefined)
         {
-            creep.memory.attacker = true; // <---- makes the soldier move to flag.
+            creep.memory.attacker = false; // <---- makes the soldier move to flag.
         }
         
         var targetRoom; //Game.flags.expansion1 <--- set up flag name
@@ -83,7 +83,7 @@ var roleSoldier =
             }
             else if (creep.room == Game.spawns['Spawn1'].room)
             {
-                creep.moveTo(37,35);
+                creep.moveTo(16,20);
             }
         }
         if(enemy)
