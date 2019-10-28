@@ -3,7 +3,7 @@ TODO:
 -Source open spot calculations.
 -Harvesters on each spot.
 */
-//
+
 var buildqueue = require('buildQueue');
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
@@ -11,15 +11,18 @@ var roleBuilder = require('role.builder');
 var roleDeliverier = require('role.deliverier');
 var roleRepairer = require('role.repairer');
 var roleSoldier = require('role.soldier');
+var roleTank = require('role.tank');
+
 var roleScout = require('role.scout');
 var roleExpansionHarvester = require('role.expansionHarvester');
 var roleExpansionDeliverier = require('role.expansionDeliverier');
+
 var RoomMemories = require('roomMemories');
 var roleClaimer = require('role.claimer');
 var Towers = require('tower');
 
 module.exports.loop = function () {
-	for(var name in Memory.creeps) {
+	for(let name in Memory.creeps) {
         if(!Game.creeps[name]) {
             delete Memory.creeps[name];
             console.log('Clearing non-existing creep memory:', name);
@@ -27,7 +30,7 @@ module.exports.loop = function () {
     }
 
 	
-    for(var name in Game.rooms) {
+    for(let name in Game.rooms) {
         console.log('Room "'+name+'" has '+Game.rooms[name].energyAvailable+' energy');
     }
     ///////////////
@@ -38,9 +41,9 @@ module.exports.loop = function () {
     ////////////////////////////////////////////////
     ////////////////////  ROLES  ///////////////////
     ////////////////////////////////////////////////
-    for(var name in Game.creeps) 
+    for(let name in Game.creeps) 
     {
-        var creep = Game.creeps[name];
+        let creep = Game.creeps[name];
         switch(creep.memory.role)
         {
             case 'harvester':
@@ -65,6 +68,10 @@ module.exports.loop = function () {
             case 'soldier':
                 roleSoldier.run(creep);
                 break;
+                
+            case 'tank':
+                roleTank.run(creep);
+                break;
             
             case 'scout':
                 roleScout.run(creep);
@@ -84,7 +91,7 @@ module.exports.loop = function () {
         }
     }
     
-    var room = Game.spawns.Spawn1.room;
+    const room = Game.spawns.Spawn1.room;
     Towers.run(room.name);
     
     RoomMemories.run();

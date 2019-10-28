@@ -32,7 +32,7 @@ var roleExpansionDeliverier = {
                         creep.moveTo(dropedResources.pos)
                     }
                 }
-	            if (tombstones.length > 0)
+	            else if (tombstones.length > 0)
                 {
                     if(creep.withdraw(tombstones[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
                     {

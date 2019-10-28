@@ -9,8 +9,6 @@ var roleExpansionHarvester =
     {
         var targetFlag = Game.flags.expansion1;
         
-        
-        
         if(creep.room == targetFlag.room)
         {
             creep.memory.sourceMining = 0;

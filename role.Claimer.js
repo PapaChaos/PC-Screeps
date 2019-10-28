@@ -9,8 +9,8 @@ var roleClaimer =
     run: function(creep)
     {
         var targetRoom = Game.flags.expansion1;
-        var reserve = true;
-        var claim = false;
+        var reserve = false;
+        var claim = true;
         
 
 

@@ -44,17 +44,36 @@ var roleHarvester = {
                 creep.say('⛏ - 🌟');
         }
 
-        else if (creep.carry = creep.carryCapacity){
+        else if (creep.carry.energy == creep.carryCapacity){
             creep.memory.harvesting = false; 
              var deliverieres = _.filter(Game.creeps, (creep) => creep.memory.role == 'deliverier');
 	         if(deliverieres.length < 6)
 	         {
 	            var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
+	            
             var targets = creep.room.find(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (	structure.structureType == STRUCTURE_EXTENSION || 
 									structure.structureType == STRUCTURE_SPAWN) &&
 									structure.energy < structure.energyCapacity;
+                    }
+            });
+            
+            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (
+                                    structure.structureType == STRUCTURE_EXTENSION || 
+									structure.structureType == STRUCTURE_SPAWN) &&
+									structure.energy < structure.energyCapacity;
+                    }
+            });
+            
+            var target2 = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (
+                                    structure.structureType == STRUCTURE_CONTAINER ||
+									structure.structureType == STRUCTURE_STORAGE) &&
+									structure.store < structure.storeCapacity;
                     }
             });
              var towers = creep.room.find(FIND_STRUCTURES, {
@@ -69,8 +88,22 @@ var roleHarvester = {
                 }}
                 )
             var deliveriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'deliverier' && !creep.memory.readyForDelivery);
-
-            if(targets.length > 0) {
+            
+            if(target) 
+            {
+                if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                {
+                    creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
+            else if(target2)
+            {
+                if(creep.transfer(target2, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                {
+                    creep.moveTo(target2, {visualizePathStyle: {stroke: '#ffffff'}});
+                }
+            }
+            else if(targets.length > 0) {
                 if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }

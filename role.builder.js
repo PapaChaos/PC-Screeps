@@ -26,6 +26,38 @@ var roleBuilder = {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
+            else if(targets.length == 0)
+            {
+                targets = creep.room.find(FIND_STRUCTURES, 
+                {
+                    filter: (structure) =>
+                    { 
+                        return (
+                            structure.structureType == STRUCTURE_RAMPART) &&
+                            structure.hits < structure.hitsMax;
+                    }
+                })
+                if(targets.length > 0) 
+                {
+                    targets.sort((a,b) => (a.hits/a.hitsMax) - (b.hits/b.hitsMax));
+                    
+                    if(creep.repair(targets[0]) == ERR_INVALID_TARGET ||
+                        creep.repair(targets[0]) == ERR_NOT_ENOUGH_RESOURCES)
+                    {
+                        creep.say('🔧 - Invalid');
+                    }
+                    else if(targets[0].hits == targets[0].hitsMax)
+                    {
+                        creep.say('🔧 - Done');
+                    }
+            
+                    else if(creep.repair(targets[0]) == ERR_NOT_IN_RANGE )
+                    {
+                        creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});  
+                    }
+                }
+
+            }
             else
             {
                 

@@ -45,27 +45,39 @@ var roleSoldier =
             console.log(creep.name," soldier doesn't have relevant body!");
         }
         
-        if(creep.memory.attacker === undefined)
+        if(creep.memory.attacker === undefined)// <---- memory makes the soldier move to flag.
         {
-            creep.memory.attacker = false; // <---- makes the soldier move to flag.
+            creep.memory.attacker = false; 
         }
+        creep.memory.attacker = true;
         
-        var targetRoom; //Game.flags.expansion1 <--- set up flag name
-        var targetSpawn = creep.room.find(FIND_HOSTILE_SPAWNS);
         
-        creep.say(creep.memory.roleIcon);
-        var enemy= creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
-        var enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
+        
+        const targetRoom = Game.flags.attack1; //Game.flags.expansion1 <--- set up flag name
+        const targetSpawn = creep.room.find(FIND_HOSTILE_SPAWNS);
+        
+        //creep.say(creep.memory.roleIcon);
+        
+        const enemy = creep.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+        const enemies = creep.room.find(FIND_HOSTILE_CREEPS);
+        const enemyTower = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES,{filter: (enemyTower) =>{ return(
+                enemyTower.structureType == STRUCTURE_TOWER
+            )}});
+            
+        const enemyStructure = creep.pos.findClosestByPath(FIND_HOSTILE_STRUCTURES, {filter: (structure) =>{ return(
                 structure.structureType != STRUCTURE_CONTROLLER &&
                 structure.structureType != STRUCTURE_ROAD)}});
         
         if(creep.memory.attacker)
         {
-            if(targetRoom)
+            if(targetRoom && creep.room != targetRoom.room)
             {
                 creep.moveTo(targetRoom);
             }
-
+            else if(creep.room == targetRoom.room && enemies.length < 1)
+            {
+                creep.moveTo(targetRoom);
+            }
             else if(!targetRoom && (creep.room != Game.spawns['Spawn1'].room))
             {
                 creep.moveTo(Game.spawns['Spawn1']);
@@ -73,6 +85,7 @@ var roleSoldier =
             else if (!targetRoom && (creep.room == Game.spawns['Spawn1'].room))
             {
                 creep.moveTo(37,35);
+                creep.say(creep.memory.roleIcon);
             }
         }
         else
@@ -84,21 +97,67 @@ var roleSoldier =
             else if (creep.room == Game.spawns['Spawn1'].room)
             {
                 creep.moveTo(16,20);
+                creep.say(creep.memory.roleIcon);
             }
-        }
-        if(enemy)
-        {
-            if(creep.attack(enemy) == ERR_NOT_IN_RANGE) 
-            {
-                creep.moveTo(enemy);
-            }
-                creep.say(creep.memory.roleIcon,' - 💢');
         }
         
-
+        if(enemy)
+        {
+            console.log(creep.name," is attacking an enemy.");
+            if(creep.memory.soldierType == 'melee')
+            {
+                if(creep.attack(enemy) == ERR_NOT_IN_RANGE) 
+                {
+                    creep.moveTo(enemy);
+                }
+            }
+            else if(creep.memory.soldierType == 'ranger')
+            {
+                if(creep.rangedAttack(enemy) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(enemy);
+                }
+                else if (creep.rangedAttack(enemy) != ERR_NOT_IN_RANGE && creep.pos.getRangeTo(enemy) < 3){
+                    creep.moveTo(Game.flags.fallback);
+                }
+            }
+            
+            creep.say(creep.memory.roleIcon,' - 💢');
+                
+        }
+        else if(enemies.length > 0)
+        {
+            console.log(creep.name," is attacking a group of enemy.");
+            if(creep.memory.soldierType == 'melee')
+            {
+                if(creep.attack(enemies[0]) == ERR_NOT_IN_RANGE) 
+                {
+                    creep.moveTo(enemies[0]);
+                }
+            }
+            else if(creep.memory.soldierType == 'ranger')
+            {
+                if(creep.rangedAttack(enemies[0]) == ERR_NOT_IN_RANGE)
+                {
+                    creep.moveTo(enemies[0]);
+                }
+            }
+            
+            creep.say(creep.memory.roleIcon,' - 💢');
+                
+        }
+        else if(enemyTower)
+        {
+            if(creep.attack(enemyTower) == ERR_NOT_IN_RANGE)
+            {
+                creep.moveTo(enemyTower);
+            }
+            creep.say(creep.memory.roleIcon,' - 💢 Tower');
+        }
+        
         else if(targetSpawn.length)
         {
-            if(creep.attack(targetSpawn [0]) == ERR_NOT_IN_RANGE)
+            if(creep.attack(targetSpawn[0]) == ERR_NOT_IN_RANGE)
             {
                 creep.moveTo(targetSpawn[0]);
             }
@@ -111,7 +170,6 @@ var roleSoldier =
                 creep.moveTo(enemyStructure);
             }
         }
-
     }
 };
 
