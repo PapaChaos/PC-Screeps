@@ -71,7 +71,8 @@ var roleSoldier =
                 structure.structureType != STRUCTURE_WALL 
                 //&& structure.structureType != STRUCTURE_RAMPART
                 )}});
-        const enemyConstructionSite = creep.pos.findClosestByPath(FIND_HOSTILE_CONSTRUCTION_SITES);
+        const enemyConstructionSite = creep.pos.findClosestByPath(FIND_HOSTILE_CONSTRUCTION_SITES, {filter: (structure) =>{ return(
+                structure.progressTotal < 40000)}});
         if(creep.memory.attacker)
         {
 
