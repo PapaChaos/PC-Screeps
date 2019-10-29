@@ -8,7 +8,7 @@ var roleClaimer =
 {
     run: function(creep)
     {
-        var targetRoom = Game.flags.expansion1;
+        var targetRoom = Game.flags.attack2;
         var reserve = false;
         var claim = true;
         
@@ -56,10 +56,22 @@ var roleClaimer =
                 }
                 if(claim)
                 {
-                    if(creep.claimController(enemyStructure) == ERR_NOT_IN_RANGE)
+                    if(enemyStructure.level == 0)//check if controller is neutral
                     {
-                        creep.moveTo(enemyStructure);
-                        creep.say('🚩');
+                        if(creep.claimController(enemyStructure) == ERR_NOT_IN_RANGE)
+                        {
+                            creep.moveTo(enemyStructure);
+                            creep.say('🚩');
+                        }
+                    }
+                    else
+                    {
+                        //creep.say("waiting on next attack");
+                        if(creep.attackController(enemyStructure) == ERR_NOT_IN_RANGE) //can only be attacked once every 1000 ticks.
+                                        {
+                            creep.moveTo(enemyStructure);
+                            creep.say('🚩');
+                        }
                     }
                 }
             }

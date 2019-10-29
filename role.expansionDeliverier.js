@@ -20,8 +20,11 @@ var roleExpansionDeliverier = {
                 var containers = Game.flags.expansion1.room.find(FIND_STRUCTURES, {
                     filter: (s) => s.structureType == STRUCTURE_CONTAINER
                                 && s.store[RESOURCE_ENERGY] > 0});
-                                
-                    var tombstones = creep.room.find(FIND_TOMBSTONES, { filter: (Tombstone) => { return (	
+                console.log("containers in expansion1: ",containers);
+                if(containers.length > 0){
+                var stored_resources = _.filter(Object.keys(containers[0].store), resource => containers[0].store[resource] > 0)    
+            }
+                var tombstones = creep.room.find(FIND_TOMBSTONES, { filter: (Tombstone) => { return (	
 									Tombstone.store[RESOURCE_ENERGY] > 0
                     )}});
                 if(dropedResources)
@@ -40,12 +43,12 @@ var roleExpansionDeliverier = {
                         creep.moveTo(tombstones[0], {visualizePathStyle: {stroke: '#ffffff'}});
                     }
 	            }
-                else if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+	            
+	            else if(creep.withdraw(containers[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+	            //else if(creep.withdraw(containers[0], stored_resources[0]) == ERR_NOT_IN_RANGE) 
                 {
                     creep.moveTo(containers[0]);
                 }
-                                
-                
             }
             else
             {

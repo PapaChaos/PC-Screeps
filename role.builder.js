@@ -72,8 +72,8 @@ var roleBuilder = {
                 filter: (structure) =>
                 {
                     return (
-                        structure.structureType == STRUCTURE_CONTAINER ||
-                        structure.structureType == STRUCTURE_STORAGE) && 
+                        structure.structureType == STRUCTURE_STORAGE ||
+                        structure.structureType == STRUCTURE_CONTAINER) && 
                         structure.store[RESOURCE_ENERGY] > creep.carryCapacity;
                 }
                              

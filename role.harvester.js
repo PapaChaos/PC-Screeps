@@ -3,9 +3,11 @@ TODO:
 
 */
 // Role icon: ⛏ 
-var roleHarvester = {
+var roleHarvester = 
+{
 
-    run: function(creep) {
+    run: function(creep) 
+    {
         var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester' && creep.memory.sourceMining == 0));
         
        /* var source = creep.pos.findClosest(FIND_SOURCES, 
@@ -44,15 +46,16 @@ var roleHarvester = {
                 creep.say('⛏ - 🌟');
         }
 
-        else if (creep.carry.energy == creep.carryCapacity){
+        else if (creep.carry.energy == creep.carryCapacity)
+        {
             creep.memory.harvesting = false; 
-             var deliverieres = _.filter(Game.creeps, (creep) => creep.memory.role == 'deliverier');
-	         if(deliverieres.length < 6)
-	         {
-	            var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
+            var deliverieres = _.filter(Game.creeps, (creep) => creep.memory.role == 'deliverier');
+            if(deliverieres.length < 1)
+            {
+                var constructions = creep.room.find(FIND_CONSTRUCTION_SITES);
 	            
-            var targets = creep.room.find(FIND_STRUCTURES, {
-                    filter: (structure) => {
+                var targets = creep.room.find(FIND_STRUCTURES, {
+                        filter: (structure) => {
                         return (	structure.structureType == STRUCTURE_EXTENSION || 
 									structure.structureType == STRUCTURE_SPAWN) &&
 									structure.energy < structure.energyCapacity;
@@ -125,9 +128,30 @@ var roleHarvester = {
             }
         }	        
 
-                else if(deliverieres.length > 0)
+            else if(deliverieres.length > 0)
             {
-                creep.say("⛏ - ⏳");
+                var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (
+                                    structure.structureType == STRUCTURE_EXTENSION || 
+									structure.structureType == STRUCTURE_SPAWN) &&
+									structure.energy < structure.energyCapacity;
+                    }
+                });
+                
+                if(target) 
+                {
+                    if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
+                    {
+                        creep.moveTo(target, {visualizePathStyle: {stroke: '#ffffff'}});
+                    }
+                } 
+                else
+                {
+                    creep.say("⛏ - ⏳");
+                }
+ 
+                
             }
         }
 	}

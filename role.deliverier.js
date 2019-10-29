@@ -16,22 +16,39 @@ var roleDeliverier =
 	        {
 	            var harvesters = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy == creep.carryCapacity);
 	           	var harvesters2 = _.filter(Game.creeps, (creep) => (creep.memory.role == 'harvester')  && creep.carry.energy > 0);
+	           	var dropedEnergy;
+	           	var dropedResources;
+	           	
 	           	if(creep.room.FIND_DROPPED_ENERGY){
 	           	    	           	var dropedEnergy = creep.pos.findClosestByPath(FIND_DROPPED_ENERGY);
 	           	}
-
+                if(creep.room.FIND_DROPPED_RESOURCES)
+                {
+                    var dropedResources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+                }
 
                 var tombstones = creep.room.find(FIND_TOMBSTONES, 
                 { filter: (Tombstone) => { return (	
 									Tombstone.store[RESOURCE_ENERGY] > 0
                     )}});
+                /*   
+                let stored_resources = _.filter(Object.keys(creep.room.storage.store), resource => creep.room.storage.store[resource] > 0)    
+                creep.withdraw(creep.room.storage.store, stored_resources[0])
+
+                */
                     
                 var ruins = creep.room.find(FIND_RUINS, 
                 { filter: (ruin) => { return (	
 									ruin.store[RESOURCE_ENERGY] > 0
                     )}});
-
-	            if (tombstones.length > 0)
+                if(dropedResources)
+                {
+                     if(creep.pickup(dropedResources) == ERR_NOT_IN_RANGE)
+                    {
+                        creep.moveTo(dropedResources.pos)
+                    }
+                }
+	            else if (tombstones.length > 0)
                 {
                     if(creep.withdraw(tombstones[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) 
                     {

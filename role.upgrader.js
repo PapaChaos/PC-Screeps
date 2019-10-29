@@ -18,14 +18,17 @@ var roleUpgrader =
         targetFlag += creep.memory.targetFlag;
         console.log('targetFlag is: ',targetFlag);
         
-        /*
-        if(creep.room == Game.flags.expansion1.room)
-        if(targetFlag != 0 && creep.room != Game.flags[targetFlag].room)
+        if(creep.memory.targetFlag == 0 && creep.room != Game.spawns.Spawn1.room)
         {
-            creep.moveTo(Game.flags[targetFlag]);
-        }*/
+            creep.moveTo(Game.spawns.Spawn1)
+        }
+        else if(creep.memory.targetFlag == 1 && creep.room != Game.flags.expansion1.room)
+        {
+            creep.say('⚡ moving');
+            creep.moveTo(Game.flags.expansion1);
+        }
         
-        if((creep.memory.targetFlag == 0 && creep.room == Game.spawns['Spawn1'].room) || creep.room == Game.flags[targetFlag] )
+        else
         {
             if(creep.memory.upgrading && creep.carry.energy == 0) 
             {
@@ -54,8 +57,8 @@ var roleUpgrader =
                     filter: (structure) =>
                     {
                         return (
-                            structure.structureType == STRUCTURE_CONTAINER ||
-                            structure.structureType == STRUCTURE_STORAGE) && 
+                            structure.structureType == STRUCTURE_STORAGE ||
+                            structure.structureType == STRUCTURE_CONTAINER) && 
                             structure.store[RESOURCE_ENERGY] >= creep.carryCapacity;
                      }
                              

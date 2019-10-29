@@ -6,34 +6,37 @@ var buildQueue =
 {
     startProduction: function() 
     {
-        const needClaimer = false;
         var buildQueueTier = 0;
         const expansionFlagName = 'expansion';
         const expansionFlags=_.filter(Game.flags,flag => {
         return flag.name.indexOf(expansionFlagName)>-1;
         });
-        
+                   
+        const upgradersExpansion1 = _.filter(Game.creeps, (creep) => 
+            creep.memory.role == 'upgrader' && 
+            creep.memory.targetFlag == 1);
+            
         console.log('Amount of flags: ', expansionFlags.length);
         ////////////////////////////////////////////////
         ////////////////  CREEP AMOUNT  ////////////////
         ////////////////////////////////////////////////
         //main hq creeps
         const amountHarvester = 2; 
-        const amountUpgraders = 2;
+        const amountUpgraders = 3;
         const amountDeliveriers = 2;
-        const amountBuilders = 2;
-        const amountRepairers = 4;
+        const amountBuilders = 1;
+        const amountRepairers = 2;
         
         //expansion creeps
-        const amountScouts = 1;//*expansionFlags.length;
+        const amountScouts = 0;//*expansionFlags.length;
         const amountExpansionHarvesters = 2;
-        const amountExpansionDeliveriers = 6;
+        const amountExpansionDeliveriers = 5;
         
         //combat creeps
         const amountSoldierMelees = 1;
-        const amountSoldierRangers = 4;
-        const amountSoldierMedics = 0;
-        const amountTanks = 1;
+        const amountSoldierRangers = 2;
+        const amountSoldierMedics = 2;
+        const amountTanks = 0;
 
         const amountClaimers = 1;
         ////////////////////////////////////////////////
@@ -41,19 +44,25 @@ var buildQueue =
         ////////////////////////////////////////////////
         const bodyHarvester = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE]; 
         
-        const bodyUpgraders = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
-        const bodyBuilders = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
-        const bodyRepairers = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
-        const bodyDeliveriers = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
+        const bodyUpgraders = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+        const bodyBuilders =  [WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+        const bodyRepairers = [WORK,WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE,MOVE];
+        const bodyDeliveriers = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         
         const bodyScouts = [ATTACK,ATTACK,TOUGH,TOUGH,MOVE,MOVE];
         const bodyExpansionHarvesters = [WORK,WORK,WORK,WORK,WORK,CARRY,MOVE,MOVE,MOVE];
         const bodyExpansionDeliveriers = [CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE,MOVE,MOVE];
         
         const bodySoldierMelees = [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,ATTACK,ATTACK,MOVE,MOVE,MOVE,MOVE,MOVE];
-        const bodySoldierRangers = [TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,MOVE,RANGED_ATTACK,RANGED_ATTACK];
-        const bodyTank = [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,ATTACK,
-                        MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE,MOVE];
+        const bodySoldierRangers = [TOUGH,TOUGH,MOVE,TOUGH,TOUGH,MOVE,RANGED_ATTACK,RANGED_ATTACK,MOVE,RANGED_ATTACK,RANGED_ATTACK,MOVE,RANGED_ATTACK,RANGED_ATTACK,MOVE];
+        const bodySoldierMedic = [TOUGH,TOUGH,TOUGH,TOUGH,TOUGH,MOVE,MOVE,HEAL,MOVE,HEAL,HEAL,MOVE];
+        const bodyTank = [TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
+                          TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
+                          TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH, TOUGH,
+                          MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, MOVE, 
+                          MOVE, MOVE, MOVE, MOVE, MOVE, ATTACK]
+                        
+
         
         const bodyClaimers = [CLAIM,CLAIM,MOVE];
         
@@ -69,6 +78,14 @@ var buildQueue =
         HEAL	        250	Heals a target creep. Restores 12 hit points/tick at short range (1 tile) or 4 hits/tick at a distance (up to 3 tiles).
         TOUGH	         10	No effect other than the 100 hit points all body parts add. This provides a cheap way to add hit points to a creep.
         CLAIM	        600	
+        
+        350
+        350
+        350
+        1050
+        
+        
+        1300
         */
         
         ////////////////////////////////////////////////
@@ -108,15 +125,30 @@ var buildQueue =
             const deliveriers = _.filter(Game.creeps, (creep) => creep.memory.role == 'deliverier');
             console.log('Deliveriers: ' + deliveriers.length);
             
-            const upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+            const upgraders = _.filter(Game.creeps, (creep) => 
+                    creep.memory.role == 'upgrader');
+
+            console.log('expansion Upgraders: ' + upgradersExpansion1.length);
+            
             console.log('Upgraders: ' + upgraders.length);
+            
             if(upgraders.length < amountUpgraders) 
             {
                 var newName = 'Upgrader' + Game.time;
                 console.log('Spawning new upgrader: ' + newName);
+
                 Game.spawns['Spawn1'].spawnCreep(bodyUpgraders, newName, 
-                {memory: {role: 'upgrader'}});
+                {memory: {role: 'upgrader', targetFlag: 0}});
+
             }
+            else if(upgradersExpansion1.length < amountUpgraders)
+            {
+                var newName = 'Upgrader' + Game.time;
+                console.log('Spawning new upgrader: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodyUpgraders, newName, 
+                {memory: {role: 'upgrader', targetFlag: 1}});
+            }
+            
             else if(deliveriers.length < amountDeliveriers) 
             {
                 var newName = 'Deliverier' + Game.time;
@@ -168,53 +200,8 @@ var buildQueue =
         ////////////////////////////////////////////////
         ///////////////  BUILD QUEUE 3  ////////////////
         ////////////////////////////////////////////////
+
         if(buildQueueTier == 3)
-        {
-            
-            const soldierMelees = _.filter(Game.creeps, (creep) => 
-                creep.memory.role == 'soldier' && 
-                creep.memory.soldierType == 'melee');
-                
-            console.log('Melees: ' + soldierMelees.length);
-            
-            const soldierRangers = _.filter(Game.creeps, (creep) => 
-                creep.memory.role == 'soldier' && 
-                creep.memory.soldierType == 'ranger');
-            
-            const tanks = _.filter(Game.creeps, (creep) => 
-                creep.memory.role == 'tank');    
-            if(soldierRangers.length < amountSoldierRangers)
-            {
-                var newName = 'Legionary' + Game.time;
-                console.log('Spawning new Ranger: ' + newName);
-                Game.spawns['Spawn1'].spawnCreep(bodySoldierRangers, newName, 
-                {memory: {role: 'soldier'}});
-            }           
-            else if(soldierMelees.length < amountSoldierMelees)
-            {
-                var newName = 'Legionary' + Game.time;
-                console.log('Spawning new Melee: ' + newName);
-                Game.spawns['Spawn1'].spawnCreep(bodySoldierMelees, newName, 
-                {memory: {role: 'soldier'}});
-            }
-
-            else if(tanks.length < amountTanks)
-            {
-                var newName = 'Tank' + Game.time;
-                console.log('Spawning new Tank: ' + newName);
-                Game.spawns['Spawn1'].spawnCreep(bodyTank, newName, 
-                {memory: {role: 'tank'}});
-            }
-            else
-            {
-                buildQueueTier = 4;
-            }
-        }
-
-        ////////////////////////////////////////////////
-        ///////////////  BUILD QUEUE 4  ////////////////
-        ////////////////////////////////////////////////        
-        if(buildQueueTier == 4)
         {
             const scouts = _.filter(Game.creeps, (creep) => creep.memory.role == 'scout');
             console.log('Scouts: ' + scouts.length);
@@ -269,34 +256,93 @@ var buildQueue =
             }
             else
             {
-                buildQueueTier = 5;
+                buildQueueTier = 4;
             }
         }
         
+        ////////////////////////////////////////////////
+        ///////////////  BUILD QUEUE 4  ////////////////
+        ////////////////////////////////////////////////  
+        
+        if(buildQueueTier == 4)
+        {
+            
+            const soldierMelees = _.filter(Game.creeps, (creep) => 
+                creep.memory.role == 'soldier' && 
+                creep.memory.soldierType == 'melee');
+                
+            console.log('Melees: ' + soldierMelees.length);
+            
+            const soldierRangers = _.filter(Game.creeps, (creep) => 
+                creep.memory.role == 'soldier' && 
+                creep.memory.soldierType == 'ranger');
+                
+            const soldierMedics = _.filter(Game.creeps, (creep) => 
+                creep.memory.role == 'soldier' && 
+                creep.memory.soldierType == 'medic');
+                
+            const tanks = _.filter(Game.creeps, (creep) => 
+                creep.memory.role == 'tank');  
+            if(tanks.length < amountTanks)
+            {
+                var newName = 'Tank' + Game.time;
+                console.log('Spawning new Tank: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodyTank, newName, 
+                {memory: {role: 'tank'}});
+            }
+            else if(soldierMedics.length < amountSoldierMedics)
+            {
+                var newName = 'Legionary' + Game.time;
+                console.log('Spawning new Medic: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodySoldierMedic, newName, 
+                {memory: {role: 'soldier'}});
+            }
+            else if(soldierRangers.length < amountSoldierRangers)
+            {
+                var newName = 'Legionary' + Game.time;
+                console.log('Spawning new Ranger: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodySoldierRangers, newName, 
+                {memory: {role: 'soldier'}});
+            }           
+            else if(soldierMelees.length < amountSoldierMelees)
+            {
+                var newName = 'Legionary' + Game.time;
+                console.log('Spawning new Melee: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodySoldierMelees, newName, 
+                {memory: {role: 'soldier'}});
+            }
+            
+
+
+            else
+            {
+                buildQueueTier = 5;
+            }
+        }
+
         ////////////////////////////////////////////////
         ///////////////  BUILD QUEUE 5  ////////////////
         ////////////////////////////////////////////////
 
         if(buildQueueTier == 5)
         {
-            if(needClaimer)
-            {
-                const claimers = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
-                console.log('Claimers: ' + claimers.length);
+
+            const claimers = _.filter(Game.creeps, (creep) => creep.memory.role == 'claimer');
+            console.log('Claimers: ' + claimers.length);
             
-                if(claimers.length < amountClaimers)
-                {
-                  var newName = 'Claimer' + Game.time;
-                   console.log('Spawning new Claimer: ' + newName);
-                   Game.spawns['Spawn1'].spawnCreep(bodyClaimers, newName, 
-                   {memory: {role: 'claimer'}});
+            if(claimers.length < amountClaimers)
+            {
+                var newName = 'Claimer' + Game.time;
+                console.log('Spawning new Claimer: ' + newName);
+                Game.spawns['Spawn1'].spawnCreep(bodyClaimers, newName, 
+                {memory: {role: 'claimer'}});
                 }
                 else
                 {
                     buildQueueTier = 6;
                 }
             }
-        }
+
         console.log('Build Queue: ' + buildQueueTier);
         if(Game.spawns['Spawn1'].spawning) 
         { 
